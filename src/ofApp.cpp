@@ -17,6 +17,9 @@ void ofApp::setup(){
     fbo.begin();
     ofClear(255, 255, 255, 0);
     fbo.end();
+
+    // Load shader
+    shader.load("","warping.frag");
 }
 
 //--------------------------------------------------------------
@@ -27,7 +30,6 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     // 1. Draw warped pen_1.jpg to the screen
-    shader.load("","test.frag");
     shader.begin();
     shader.setUniformTexture("u_image", image1.getTexture(), 0);
     shader.setUniform2f("u_imageSize", image1.getWidth(), image1.getHeight());
@@ -40,7 +42,6 @@ void ofApp::draw(){
 
     // 2. Draw warped pen_2.jpg to the framebuffer
     fbo.begin();
-    shader.load("","test.frag");
     shader.begin();
     shader.setUniformTexture("u_image", image2.getTexture(), 0);
     shader.setUniform2f("u_imageSize", image2.getWidth(), image2.getHeight());
