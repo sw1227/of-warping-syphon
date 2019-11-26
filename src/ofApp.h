@@ -9,8 +9,12 @@ public:
     void setup();
     void update();
     void draw();
-    ofxSyphonServer output;
+
+    ofxSyphonServer screenOutput;
+    ofxSyphonServer textureOutput;
     
     ofShader shader;
-    ofImage image;
+    ofImage image1;
+    ofImage image2;
+    ofFbo fbo;
 };
