@@ -17,4 +17,7 @@ public:
     ofImage image1;
     ofImage image2;
     ofFbo fbo;
+
+    // Distorted time
+    float time;
 };

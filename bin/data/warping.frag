@@ -110,9 +110,9 @@ void main() {
     vec2 texCoord = st * u_imageSize;
 
     // Domain warping
-    float time = 2.0 * u_time + sin(2.0 * u_time);
-    float x = onoise(vec3(st + vec2(0.0, 0.0), time / 8.0));
-    float y = onoise(vec3(st + vec2(5.2, 1.3), time / 8.0));
+//    float time = 2.0 * u_time + sin(2.0 * u_time);
+    float x = onoise(vec3(st + vec2(0.0, 0.0), u_time / 8.0));
+    float y = onoise(vec3(st + vec2(5.2, 1.3), u_time / 8.0));
     vec2 warped =  st + vec2(x, y) * 0.1;
     gl_FragColor = texture2DRect(u_image, mirror(u_imageSize * warped, u_imageSize));
 }

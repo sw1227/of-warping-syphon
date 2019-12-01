@@ -3,6 +3,7 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofSetFrameRate(60);
+    time = 0.0;
 
     // Load two images
     image1.load("pen_1.jpg");
@@ -24,7 +25,11 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-
+    float t = ofGetElapsedTimef();
+    float dt = 1.0 / 60.0;
+    float T = 3.0;
+    float omega = 2.0 * PI / T;
+    time += dt * (omega + omega * cos(omega * t));
 }
 
 //--------------------------------------------------------------
@@ -33,7 +38,7 @@ void ofApp::draw(){
     shader.begin();
     shader.setUniformTexture("u_image", image1.getTexture(), 0);
     shader.setUniform2f("u_imageSize", image1.getWidth(), image1.getHeight());
-    shader.setUniform1f("u_time", ofGetElapsedTimef());
+    shader.setUniform1f("u_time", time);
     shader.setUniform2f("u_resolution", ofGetWidth(), ofGetHeight());
     ofDrawRectangle(0,0,ofGetWidth(), ofGetHeight());
     shader.end();
@@ -45,7 +50,7 @@ void ofApp::draw(){
     shader.begin();
     shader.setUniformTexture("u_image", image2.getTexture(), 0);
     shader.setUniform2f("u_imageSize", image2.getWidth(), image2.getHeight());
-    shader.setUniform1f("u_time", ofGetElapsedTimef());
+    shader.setUniform1f("u_time", time);
     shader.setUniform2f("u_resolution", ofGetWidth(), ofGetHeight());
     ofDrawRectangle(0,0,ofGetWidth(), ofGetHeight());
     shader.end();
