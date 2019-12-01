@@ -20,4 +20,15 @@ public:
 
     // Distorted time
     float time;
+    
+    // For serial communication
+    ofSerial serial;
+    
+    unsigned char swFlag; //0:OFF, 1:ON
+    int distance; //distance from ultrasonic sensor (cm)
+    int validDistanceStart;
+    int validDistanceEnd;
+    
+    int frameCount;
+    int currentFrameCount;
 };

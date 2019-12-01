@@ -21,10 +21,66 @@ void ofApp::setup(){
 
     // Load shader
     shader.load("","warping.frag");
+    
+    // Setup Serial Communication
+    serial.setup("/dev/cu.usbmodem14201",9600);
+    
+    swFlag = 0;
+    distance = 0;
+    
+    // Valid distance range
+    validDistanceStart = 15;
+    validDistanceEnd = 200;
+    
+    frameCount = 60;
+    currentFrameCount = frameCount;
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
+    
+    if (currentFrameCount == frameCount) {
+        
+        int bytesRequired = 3;
+        unsigned char bytes[bytesRequired];
+        int bytesRemaining = bytesRequired;
+        while ( bytesRemaining > 0 )
+        {
+            if ( serial.available() > 0 )
+            {
+                int bytesArrayOffset = bytesRequired - bytesRemaining;
+                int result = serial.readBytes( &bytes[bytesArrayOffset],
+                                              bytesRemaining );
+                
+                if ( result == OF_SERIAL_ERROR )
+                {
+                    ofLog( OF_LOG_ERROR, "unrecoverable error reading from serial" );
+                    break;
+                }
+                else if ( result == OF_SERIAL_NO_DATA )
+                {
+                    // nothing was read, try again
+                }
+                else
+                {
+                    // we read some data!
+                    bytesRemaining -= result;
+                    swFlag = bytes[0];
+                    distance = int(bytes[2] << 8) + bytes[1];
+                    if (!(validDistanceStart <= distance && distance <= validDistanceEnd)) {
+                        swFlag = 0;
+                    }
+                    std::cout << int(swFlag) << endl;
+                    std::cout << distance << endl;
+                    
+                    serial.flush();
+                }
+            }
+        }
+        currentFrameCount = 0;
+    }
+    currentFrameCount++;
+    
     float t = ofGetElapsedTimef();
     float dt = 1.0 / 60.0;
     float T = 3.0;
