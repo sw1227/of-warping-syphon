@@ -20,6 +20,7 @@ public:
 
     // Distorted time
     float time;
+    float T;
     
     // For serial communication
     ofSerial serial;
