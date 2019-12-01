@@ -4,7 +4,7 @@
 void ofApp::setup(){
     ofSetFrameRate(60);
     time = 0.0;
-    T = 2.0;
+    omega = 0.0;
 
     // Load two images
     image1.load("pen_1.jpg");
@@ -76,7 +76,10 @@ void ofApp::update(){
 
                     // Update T(Period) based on distance
                     if (static_cast<int>(swFlag) == 1) {
-                        T = static_cast<float>(distance)/ 30.0;
+                        float T = static_cast<float>(distance)/ 30.0;
+                        omega = 2.0 * PI / T;
+                    } else {
+                        omega = 0.0;
                     }
                     
                     serial.flush();
@@ -89,8 +92,6 @@ void ofApp::update(){
     
     float t = ofGetElapsedTimef();
     float dt = 1.0 / 60.0;
-//    float T = 3.0;
-    float omega = 2.0 * PI / T;
     time += dt * (omega + omega * cos(omega * t));
 }
 
